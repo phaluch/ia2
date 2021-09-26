@@ -10,6 +10,15 @@ def DecimalToBinary(num):
     if num == 1:
         return str(num % 2)
     return DecimalToBinary(num // 2) + str(num % 2)
+
+def BinaryToDecimal(num):
+    ans = 0
+    tam = len(num)
+    for i in range(tam):
+        if num[i] == '1':
+            exponent = tam-i - 1
+            ans+= 2**exponent
+    return ans
     
 def newpop(Nind, CromLim):
     """
@@ -46,8 +55,8 @@ Lbits: vetor Ncrom contendo o número de bits para cada cromossomo
 def cod(pop, CromLim, Lbits):
     Nind = len(pop)
     Ncrom = len(CromLim)
-    cod = {}
-    temp = ''
+    coded = {}
+    temp = '' # Variável que vai receber o indivíduo
     for i in range(Nind):
         for j in range(Ncrom):
             aux = pop[i][j]
@@ -61,13 +70,41 @@ def cod(pop, CromLim, Lbits):
                 temp = baux
             else:
                 temp = temp + baux
-        cod[i] = temp
-    return cod
+        coded[i] = temp
+    return coded
+
+"""
+Rotina para decodificação binária dos invivíduos
+pop: população a ser decodificada
+Ncrom: número de cromossomos em cada indivíduo
+Lbits: vetor Ncrom contendo o número de bits para cada cromossomo
+"""
+
+def decod(pop, Lbits):
+    decoded = []
+    for ind in pop:
+        startIndex = endIndex = 0
+        tempInd = {}
+        for i in range(len(Lbits)):
+            endIndex += Lbits[i] 
+            curCrom = pop[ind][startIndex:endIndex]
+            tempInd[i] = BinaryToDecimal(curCrom)
+            startIndex = endIndex
+        decoded.append(tempInd)
+    return decoded
+        
+
 
 Nind = 6
 CromLim = [(1,2),(3,4),(5,6),(7,8),(1,2),(3,4)]
 CromLim = [(10*x[0],10*x[1]) for x in CromLim]
 
 pop = newpop(Nind, CromLim)
-k = 7
-codpop = cod(pop, CromLim, [k for _ in range(Nind)])
+k = 2
+Lbits = [k*i+5 for i in range(Nind)]
+print(Lbits)
+print(pop)
+codpop = cod(pop, CromLim, Lbits)
+print(codpop)
+decpop = decod(codpop, Lbits)
+print(decpop)
