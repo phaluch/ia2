@@ -2,7 +2,7 @@
 Rotina para criação de população inicial aleatória
 """
 
-from random import random, choice
+import random
 
 # Function to convert decimal number
 # to binary using recursion
@@ -56,7 +56,7 @@ def newpop(Nind, CromLim):
 
 
 
-def cod(pop, CromLim, Lbits):
+def cod(pop, Lbits):
     """
     Rotina para codificação binária dos invivíduos
     pop: população a ser codificada
@@ -65,7 +65,7 @@ def cod(pop, CromLim, Lbits):
     Lbits: vetor Ncrom contendo o número de bits para cada cromossomo
     """
     Nind = len(pop)
-    Ncrom = len(CromLim)
+    Ncrom = len(pop[0])
     coded = {}
     temp = '' # Variável que vai receber o indivíduo
     for i in range(Nind):
@@ -114,7 +114,7 @@ def fit(pop, func):
     @return : list contendo os valores de fit para cada indivíduo de pop, em ordem
     """
 
-    return [func(ind) for ind in pop]
+    return [func(pop[ind]) for ind in pop]
 
 
 def roulette(pop, fitValues):
@@ -129,7 +129,7 @@ def roulette(pop, fitValues):
     for i in range(len(pop)):
         tempPop += [pop[i] for _ in range(fitValues[i])]
     # Etapa de seleção
-    newPop = [choice(tempPop) for _ in range(len(pop))]
+    newPop = [random.choice(tempPop) for _ in range(len(pop))]
     return newPop
 
 def cruzamentoSimples(x, y, Lbits, cut=None):
@@ -174,6 +174,6 @@ def mutacaoPop(pop, pmut):
     @return: lista de strings de 0's e 1's
     """
 
-    return [mutacaoIndividuo(ind) if random.random() < pmut else ind for ind in pop]
+    return [mutacaoIndividuo(pop[ind]) if random.random() < pmut else ind for ind in pop]
 
 
