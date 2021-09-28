@@ -1,11 +1,5 @@
-"""
-Rotina para criação de população inicial aleatória
-"""
-
 import random
 
-# Function to convert decimal number
-# to binary using recursion
 def DecimalToBinary(num):
     """
     Converte inteiros base 10 em strings representando valores base 2, com o mínimo possível de bits.
@@ -51,10 +45,6 @@ def newpop(Nind, CromLim):
         Populacao.append(individuo)
 
     return Populacao
-
-
-
-
 
 def cod(pop, Lbits):
     """
