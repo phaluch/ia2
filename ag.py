@@ -1,4 +1,6 @@
+import pandas as pd
 import random
+import networkx as nx
 
 def DecimalToBinary(num):
     """
@@ -24,7 +26,7 @@ def BinaryToDecimal(num):
             ans+= 2**exponent
     return ans
     
-def newpop(Nind, CromLim):
+def newpop(Nind, CromLim, start, finish):
     """
     Cria a população
     @param Nind : Número de indivíduos na população
@@ -41,7 +43,9 @@ def newpop(Nind, CromLim):
         for j in range(Ncrom):
             inf = CromLim[j][0]
             sup = CromLim[j][1]
-            individuo[j] = inf + round(random()*(sup-inf))
+            individuo[j] = inf + round(random.random()*(sup-inf))
+        individuo[0] = start
+        individuo[sorted(individuo.keys())[-1]] = finish
         Populacao.append(individuo)
 
     return Populacao
@@ -165,5 +169,16 @@ def mutacaoPop(pop, pmut):
     """
 
     return [mutacaoIndividuo(pop[ind]) if random.random() < pmut else ind for ind in pop]
+
+def newMatrix(n,p,lower=1,upper=100):
+    g = nx.gnp_random_graph(n,p)
+    while not nx.is_connected(g):
+        g = nx.gnp_random_graph(n,p)
+    matrix = pd.DataFrame(None,index=range(n),columns=range(n))
+    for edge in g.edges:
+        matrix.loc[edge[0],edge[1]] = matrix.loc[edge[1],edge[0]] = random.randint(lower,upper)
+        for i in range(n):
+            matrix.loc[i,i] = 0
+    return matrix
 
 
